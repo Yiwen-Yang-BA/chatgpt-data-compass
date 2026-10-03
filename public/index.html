@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="导入 CSV，选择分析维度，查看可核对的统计与图表。让 AI 根据已经算好的结果解释变化。"
+    />
+    <title>Data Compass · AI 小工具</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/data.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand"><span class="logo">D</span>Data Compass</div>
+        <div class="side-intro">
+          <div class="eyebrow">DATA & FINANCE STUDIO</div>
+          <div class="nav-item">CSV 分析工作台</div>
+        </div>
+        <div class="side-note">
+          把一个想法，变成可以使用的结果。<br />轻量、专注，按你的节奏。
+        </div>
+        <div class="side-bottom">
+          <div class="eyebrow">CONNECTION</div>
+          <label
+            ><span class="sr-only" hidden>运行模式</span
+            ><select id="mode" aria-label="运行模式"></select
+          ></label>
+        </div>
+        <div class="side-footer">
+          DATA EDITION / 01<br />Built for a little more clarity.
+        </div>
+      </aside>
+      <main class="main">
+        <header class="topbar">
+          <span class="crumb">我的工作台 &nbsp; / &nbsp; CSV 分析工作台</span
+          ><span class="top-meta"
+            ><i class="dot"></i><span id="connection">正在连接…</span></span
+          >
+        </header>
+        <section class="hero">
+          <div class="eyebrow">FROM ROWS TO REASONS.</div>
+          <h1>让表格里的线索，清楚可见。</h1>
+          <p class="description">
+            导入 CSV，选择分析维度，查看可核对的统计与图表。让 AI
+            根据已经算好的结果解释变化。
+          </p>
+        </section>
+        <section class="data-layout">
+          <section class="panel">
+            <div class="panel-head">
+              <h2>01 · 准备数据</h2>
+              <button id="sample" class="small">示例数据</button>
+            </div>
+            <p class="source-note">
+              示例为人工构造的销售记录，非真实业务数据。
+            </p>
+            <textarea
+              id="csv"
+              rows="12"
+              placeholder="粘贴 CSV，第一行为列名…"
+              maxlength="250000"
+              spellcheck="false"
+            ></textarea
+            ><input
+              type="file"
+              id="file"
+              class="upload-input"
+              accept=".csv"
+              aria-label="导入CSV"
+            />
+            <div class="toolbar">
+              <button id="inspect" class="primary">读取数据</button
+              ><span id="dataset-status" class="hint">尚未读取</span>
+            </div>
+            <div class="divider"></div>
+            <h2>02 · 分析设置</h2>
+            <form id="analysis-form">
+              <label>分组列<select id="group" disabled></select></label>
+              <div class="wide-controls" style="grid-template-columns: 1fr 1fr">
+                <label
+                  >计算方式<select id="operation">
+                    <option value="sum">求和</option>
+                    <option value="mean">均值</option>
+                    <option value="count">计数</option>
+                  </select></label
+                ><label>指标列<select id="metric" disabled></select></label>
+              </div>
+              <label
+                >筛选列 · 可选<select
+                  id="filter-column"
+                  disabled
+                ></select></label
+              ><label
+                >精确匹配值<input
+                  id="filter-value"
+                  placeholder="保留与此值完全一致的行" /></label
+              ><label
+                >希望了解什么 · 可选<textarea
+                  id="question"
+                  rows="3"
+                  maxlength="500"
+                  placeholder="例如：哪个区域贡献最大？"
+                  style="min-height: 80px"
+                ></textarea></label
+              ><button
+                id="analyze"
+                class="primary"
+                disabled
+                style="margin-top: 18px"
+              >
+                分析数据 ↗
+              </button>
+            </form>
+          </section>
+          <div>
+            <div id="metrics" class="metric-grid"></div>
+            <section class="panel data-panel">
+              <div class="result-title">
+                <h2>分组表现</h2>
+                <span class="chip" id="result-label">LOCAL ANALYTICS</span>
+              </div>
+              <div id="chart" class="chart-wrap">
+                <div class="empty">
+                  <div class="symbol">▥</div>
+                  <h3>从一个维度开始</h3>
+                  <p>选择列与统计方式，让数据讲清楚一件事。</p>
+                </div>
+              </div>
+              <div id="warnings" class="warning-list"></div>
+              <div class="table-wrap" id="result-table"></div>
+              <div class="toolbar" id="exports" hidden>
+                <button id="export-csv" class="small">导出汇总 CSV</button
+                ><button id="export-json" class="small">导出分析报告</button>
+              </div>
+            </section>
+            <section class="panel data-panel">
+              <h2>结果解读</h2>
+              <div id="meta" class="meta"></div>
+              <div id="insight" class="insight">
+                计算结果与解读会在这里显示。
+              </div>
+            </section>
+            <section class="panel data-panel">
+              <h2>数据预览 <small class="muted">前 10 行</small></h2>
+              <div class="table-wrap" id="preview">
+                <p class="muted">读取 CSV 后显示。</p>
+              </div>
+            </section>
+          </div>
+        </section>
+        <footer class="footer">
+          <span>Data Compass · 独立轻量实现</span
+          ><span
+            >灵感来自
+            <a
+              href="https://github.com/Kanaries/Rath"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Kanaries/Rath</a
+            >
+            &nbsp; / &nbsp; 01 OF 10</span
+          >
+        </footer>
+      </main>
+    </div>
+    <div id="toast" role="status" aria-live="polite" hidden></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
